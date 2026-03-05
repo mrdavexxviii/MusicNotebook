@@ -9,8 +9,7 @@
         Height="{Binding AppStartHeight, Source={StaticResource ssp}}"
         Width="{Binding AppStartWidth, Source={StaticResource ssp}}"
         Left="{Binding HorizontalMargin, Source={StaticResource ssp}}"
-        Top="{Binding VerticalMargin, Source={StaticResource ssp}}"
-        >
+        Top="{Binding VerticalMargin, Source={StaticResource ssp}}">
     <Window.Resources>
         <DataTemplate x:Key="TextPageTemplate">
             <Grid>
@@ -49,29 +48,36 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <TextBox Text="{Binding Name}" />
-            <TabControl Grid.Row="1" ItemsSource="{Binding Pages}"  SelectedItem="{Binding SelectedPage, Mode=TwoWay}"
+            <TabControl Grid.Row="1" ItemsSource="{Binding Pages}" SelectedItem="{Binding SelectedPage, Mode=TwoWay}"
                         ContentTemplateSelector="{StaticResource TabContentSelector}" x:Name="Tabs" TabStripPlacement="Left">
-                <TabControl.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Width="100" x:Name="TabTitleContainer">
-                            <!-- Read-only title shown by default -->
-                            <Label x:Name="TabTitleLabel"
-                            Content="{Binding Name}"
-                            VerticalAlignment="Center"
-                            Padding="4"      
-                            MouseDoubleClick="TabTitleLabel_MouseDoubleClick"/>
-                            <!-- Editor hidden by default -->
-                            <TextBox x:Name="TabTitleEditor"
-                            Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            Visibility="Collapsed"
-                            VerticalAlignment="Center"
-                            Padding="2"
-                            MinWidth="80"
-                            LostFocus="TabTitleEditor_LostFocus"
-                            KeyDown="TabTitleEditor_KeyDown"/>
-                        </Grid>
-                    </DataTemplate>
-                </TabControl.ItemTemplate>
+                <!-- Move header DataTemplate into the TabItem container so ancestor lookups on TabItem can find the TabControl -->
+                <TabControl.ItemContainerStyle>
+                    <Style TargetType="TabItem">
+                        <Setter Property="HeaderTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <Grid Width="100" x:Name="TabTitleContainer">
+                                        <!-- Read-only title shown by default -->
+                                        <Label x:Name="TabTitleLabel"
+                                               Content="{Binding Name}"
+                                               VerticalAlignment="Center"
+                                               Padding="4"
+                                               MouseDoubleClick="TabTitleLabel_MouseDoubleClick"/>
+                                        <!-- Editor hidden by default -->
+                                        <TextBox x:Name="TabTitleEditor"
+                                                 Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 Visibility="Collapsed"
+                                                 VerticalAlignment="Center"
+                                                 Padding="2"
+                                                 MinWidth="80"
+                                                 LostFocus="TabTitleEditor_LostFocus"
+                                                 KeyDown="TabTitleEditor_KeyDown"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TabControl.ItemContainerStyle>
             </TabControl>
         </Grid>
     </Grid>
