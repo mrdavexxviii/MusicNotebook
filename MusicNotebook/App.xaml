@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:MusicNotebook"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <local:ScreenSizeProvider x:Key="ssp" />
     </Application.Resources>
 </Application>

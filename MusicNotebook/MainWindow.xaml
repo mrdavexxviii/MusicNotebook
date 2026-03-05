@@ -5,7 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MusicNotebook"
         mc:Ignorable="d"
-        Title="Music Notebook" Height="450" Width="800">
+        Title="Music Notebook"   
+        Height="{Binding AppStartHeight, Source={StaticResource ssp}}"
+        Width="{Binding AppStartWidth, Source={StaticResource ssp}}"
+        Left="{Binding HorizontalMargin, Source={StaticResource ssp}}"
+        Top="{Binding VerticalMargin, Source={StaticResource ssp}}"
+        >
     <Window.Resources>
         <DataTemplate x:Key="TextPageTemplate">
             <Grid>
