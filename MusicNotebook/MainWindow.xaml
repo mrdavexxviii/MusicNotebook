@@ -14,7 +14,9 @@
         </DataTemplate>
         <DataTemplate x:Key="ImagePageTemplate">
             <Grid>
-                <InkCanvas x:Name="Canvas" Background="White" Strokes="{Binding ImageData}"/>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                    <InkCanvas x:Name="Canvas" Background="White" Strokes="{Binding ImageData}" />
+                </ScrollViewer>
             </Grid>
         </DataTemplate>
         <local:TabContentSelector x:Key="TabContentSelector" />
