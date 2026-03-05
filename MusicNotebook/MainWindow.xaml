@@ -13,7 +13,7 @@
     <Window.Resources>
         <DataTemplate x:Key="TextPageTemplate">
             <Grid>
-                <TextBox Text="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" x:Name="TextPageContent" />
+                <TextBox Text="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" x:Name="TextPageContent" FontFamily="Consolas" />
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="ImagePageTemplate">
