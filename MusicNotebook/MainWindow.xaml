@@ -1,0 +1,68 @@
+﻿<Window x:Class="MusicNotebook.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MusicNotebook"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <DataTemplate x:Key="TextPageTemplate">
+            <Grid>
+                <TextBox Text="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" x:Name="TextPageContent" />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="ImagePageTemplate">
+            <Grid>
+                <InkCanvas x:Name="Canvas" Background="White" Strokes="{Binding ImageData}"/>
+            </Grid>
+        </DataTemplate>
+        <local:TabContentSelector x:Key="TabContentSelector" />
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
+            <Button Content="New" Command="{Binding NewCommand}" Width="50" />
+            <Button Content="Save" Command="{Binding SaveCommand}" Width="50" />
+            <Button Content="Save As" Command="{Binding SaveAsCommand}" Width="50" />
+            <Button Content="Open" Command="{Binding OpenCommand}" Width="50" />
+            <Label Content="Add Page:" VerticalAlignment="Center" Padding="0" Margin="0" />
+            <Button Content="Text" Command="{Binding AddTextPageCommand}" Width="80" />
+            <Button Content="Drawing" Command="{Binding AddImagePageCommand}" Width="80" />
+        </StackPanel>
+
+        <Grid x:Name="ContentGrid" DataContext="{Binding NoteBook}" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBox Text="{Binding Name}" />
+            <TabControl Grid.Row="1" ItemsSource="{Binding Pages}" ContentTemplateSelector="{StaticResource TabContentSelector}" x:Name="Tabs" TabStripPlacement="Left">
+                <TabControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Width="100">
+                            <!-- Read-only title shown by default -->
+                            <Label x:Name="TabTitleLabel"
+                            Content="{Binding Name}"
+                            VerticalAlignment="Center"
+                            Padding="4"      
+                            MouseDoubleClick="TabTitleLabel_MouseDoubleClick"/>
+                            <!-- Editor hidden by default -->
+                            <TextBox x:Name="TabTitleEditor"
+                            Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Visibility="Collapsed"
+                            VerticalAlignment="Center"
+                            Padding="2"
+                            MinWidth="80"
+                            LostFocus="TabTitleEditor_LostFocus"
+                            KeyDown="TabTitleEditor_KeyDown"/>
+                        </Grid>
+                    </DataTemplate>
+                </TabControl.ItemTemplate>
+            </TabControl>
+        </Grid>
+    </Grid>
+</Window>
