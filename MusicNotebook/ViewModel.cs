@@ -115,18 +115,35 @@ namespace MusicNotebook
         [RelayCommand]
         void AddTextPage()
         {
-            if (NoteBook != null)
-            {
-                NoteBook.Pages.Add(new TextPage { Name = "New Text Page", Content = "" });
-            }
+            
+                AddPage(new TextPage { Name = "New Text Page", Content = "" });
+            
         }
         [RelayCommand]
         void AddImagePage()
         {
-            if (NoteBook != null)
+
+            AddPage(new ImagePage { Name = "New Image Page", Content = "" });
+
+        }
+
+        [RelayCommand]
+        void DeleteCurrentPage()
+        {
+            if (NoteBook.SelectedPage != null)
             {
-                NoteBook.Pages.Add(new ImagePage { Name = "New Image Page", Content = "" });
+                if (MessageBox.Show("Delete current page", "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    NoteBook.Pages.Remove(NoteBook.SelectedPage);
+                }
             }
+        }
+
+        void AddPage(INotebookPage page)
+        {
+            NoteBook.Pages.Add(page);
+
+            NoteBook.SelectedPage = page; // select newly added tab
         }
 
 

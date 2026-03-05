@@ -2,6 +2,7 @@
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -22,7 +23,7 @@ namespace MusicNotebook
         {
             InitializeComponent();
             this.DataContext = new ViewModel();
-        }
+            }
 
         // Double-click the TextBlock: hide it, show the TextBox and set focus
         private void TabTitleLabel_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -32,7 +33,7 @@ namespace MusicNotebook
                 var container = FindAncestor<Grid>(fe);
                 if (container != null)
                 {
-                    ChangeVisibility(container,true);
+                    ChangeVisibility(container, true);
                 }
             }
         }
@@ -45,7 +46,7 @@ namespace MusicNotebook
                 var container = FindAncestor<Grid>(fe);
                 if (container != null)
                 {
-                    ChangeVisibility(container,false);
+                    ChangeVisibility(container, false);
                 }
             }
         }
@@ -69,14 +70,14 @@ namespace MusicNotebook
                     var container = FindAncestor<Grid>(fe);
                     if (container != null)
                     {
-                        ChangeVisibility(container,false);
+                        ChangeVisibility(container, false);
                     }
                 }
                 e.Handled = true;
             }
         }
 
-        static void ChangeVisibility(Grid container, bool editMode)
+        static void ChangeVisibility(FrameworkElement container, bool editMode)
         {
             var editor = FindChild<TextBox>(container, "TabTitleEditor");
             var label = FindChild<Label>(container, "TabTitleLabel");

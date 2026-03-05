@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Windows.Input;
 
 namespace MusicNotebook.NotebookDefinitions
@@ -14,6 +15,9 @@ namespace MusicNotebook.NotebookDefinitions
     {
         [ObservableProperty]
         private string _name = "New Notebook";
+        [ObservableProperty]
+        [JsonIgnore]
+        private INotebookPage? _selectedPage;
         public ObservableCollection<INotebookPage> Pages { get; set; } = new ();
     }
 }

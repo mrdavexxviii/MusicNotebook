@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MusicNotebook"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Music Notebook" Height="450" Width="800">
     <Window.Resources>
         <DataTemplate x:Key="TextPageTemplate">
             <Grid>
@@ -32,6 +32,8 @@
             <Label Content="Add Page:" VerticalAlignment="Center" Padding="0" Margin="0" />
             <Button Content="Text" Command="{Binding AddTextPageCommand}" Width="80" />
             <Button Content="Drawing" Command="{Binding AddImagePageCommand}" Width="80" />
+            <Rectangle Width="20" Fill="Transparent" />
+            <Button Content="Delete" Command="{Binding DeleteCurrentPageCommand}" Width="80" />
         </StackPanel>
 
         <Grid x:Name="ContentGrid" DataContext="{Binding NoteBook}" Grid.Row="1">
@@ -40,10 +42,11 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <TextBox Text="{Binding Name}" />
-            <TabControl Grid.Row="1" ItemsSource="{Binding Pages}" ContentTemplateSelector="{StaticResource TabContentSelector}" x:Name="Tabs" TabStripPlacement="Left">
+            <TabControl Grid.Row="1" ItemsSource="{Binding Pages}"  SelectedItem="{Binding SelectedPage, Mode=TwoWay}"
+                        ContentTemplateSelector="{StaticResource TabContentSelector}" x:Name="Tabs" TabStripPlacement="Left">
                 <TabControl.ItemTemplate>
                     <DataTemplate>
-                        <Grid Width="100">
+                        <Grid Width="100" x:Name="TabTitleContainer">
                             <!-- Read-only title shown by default -->
                             <Label x:Name="TabTitleLabel"
                             Content="{Binding Name}"
