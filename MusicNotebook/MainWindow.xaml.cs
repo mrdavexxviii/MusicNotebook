@@ -23,7 +23,51 @@ namespace MusicNotebook
         {
             InitializeComponent();
             this.DataContext = new ViewModel();
+            Loaded += (s, e) =>
+            {
+                if (DataContext is ViewModel vm)
+                {
+                    vm.RequestEditPageName += OnRequestEditPageName;
+                }
+            };
+        }
+
+
+        private void OnRequestEditPageName(INotebookPage page)
+        {
+            Task.Run(() => //Ensure small wait on non ui thread for tab to be created
+            {
+                Thread.Sleep(10);
+                // Ensure UI selection happens on UI thread
+                Dispatcher.BeginInvoke(() =>
+                {
+                    ActivateEditorForItem(page);
+                   
+                }, DispatcherPriority.Normal);
+            });
+        }
+
+        private void ActivateEditorForItem(INotebookPage page)
+        {
+            // Try to get the TabItem container for this page
+            var tabItem = Tabs.ItemContainerGenerator.ContainerFromItem(page) as TabItem;
+           
+            // If TabItem is still null try again later (give layout a chance)
+            if (tabItem == null)
+            {
+                Dispatcher.BeginInvoke(() => ActivateEditorForItem(page), DispatcherPriority.Input);
+                return;
             }
+
+            // The header ContentPresenter hosts the ItemTemplate; search for it first
+            var headerPresenter = FindContentPresenterByContent(Tabs, page);
+
+            var searchRoot = FindTabHeader(Tabs, page);
+
+
+            // Now toggle visibility + focus of the editor inside the header
+            ChangeVisibility(searchRoot, true);
+        }
 
         // Double-click the TextBlock: hide it, show the TextBox and set focus
         private void TabTitleLabel_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -121,6 +165,37 @@ namespace MusicNotebook
                 if (child is T t && (string.IsNullOrEmpty(name) || (child as FrameworkElement)?.Name == name))
                     return t;
                 var result = FindChild<T>(child, name);
+                if (result != null) return result;
+            }
+            return null;
+        }
+
+        // Find the ContentPresenter that hosts the header DataTemplate for the given item
+        private static ContentPresenter? FindContentPresenterByContent(DependencyObject parent, object content)
+        {
+            if (parent == null) return null;
+            int count = VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < count; i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+                if (child is ContentPresenter cp && Equals(cp.Content, content))
+                    return cp;
+                var found = FindContentPresenterByContent(child, content);
+                if (found != null) return found;
+            }
+            return null;
+        }
+
+        private static FrameworkElement? FindTabHeader(DependencyObject parent, INotebookPage page)
+        {
+            if (parent == null) return null;
+            int count = VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < count; i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+                if (child is Grid fe && fe.DataContext == page && fe.Name == "TabTitleContainer")
+                    return fe;
+                var result = FindTabHeader(child, page);
                 if (result != null) return result;
             }
             return null;

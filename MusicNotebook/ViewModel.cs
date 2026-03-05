@@ -12,6 +12,8 @@ namespace MusicNotebook
 {
     public partial class ViewModel : ObservableObject
     {
+        public event Action<INotebookPage>? RequestEditPageName;
+
         const string unprotectedExtension = ".umnb";
         const string protectedExtension = ".mnb";
         readonly string filterString = $"Music Notebook files (*{protectedExtension})|*{protectedExtension}|Unprotected Music Notebook files (*{unprotectedExtension})|*{unprotectedExtension}|All files (*.*)|*.*";
@@ -183,6 +185,7 @@ namespace MusicNotebook
             NoteBook.Pages.Add(page);
 
             NoteBook.SelectedPage = page; // select newly added tab
+            RequestEditPageName?.Invoke(page);
         }
 
 
