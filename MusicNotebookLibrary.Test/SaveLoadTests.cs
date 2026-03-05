@@ -1,12 +1,9 @@
 ﻿using AwesomeAssertions;
-using MusicNotebookLibrary.Serialisation;
-using System.Security.Cryptography;
-using System.IO;
-using System.Text;
 using MusicNotebook.NotebookDefinitions;
+using MusicNotebook.Serialisation;
 using NSubstitute;
 
-namespace MusicNotebookLibrary.Test;
+namespace MusicNotebook.Test;
 
 public class SaveLoadTests
 {
@@ -17,14 +14,13 @@ public class SaveLoadTests
         mockPasswordService.Password.Returns("asdjkaegfwekfbwefv");
         mockPasswordService.ValidPassword.Returns(true);
 
-        string mypass = "asdjkaegfwekfbwefv";
         string file = Path.GetTempFileName();
         try
         {
-            Notebook original = new Notebook
+            Notebook original = new()
             {
                 Name = "MyTestNotebook",
-                Pages = new System.Collections.ObjectModel.ObservableCollection<INotebookPage>()
+                Pages = []
             };
             original.Pages.Add(new TextPage { Name = "Page1", Content = "This is the content of page 1." });
             var s = new EncryptedSerialiser(mockPasswordService);

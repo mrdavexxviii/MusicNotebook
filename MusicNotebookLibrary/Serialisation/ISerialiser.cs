@@ -1,6 +1,6 @@
 ﻿using MusicNotebook.NotebookDefinitions;
 
-namespace MusicNotebookLibrary.Serialisation;
+namespace MusicNotebook.Serialisation;
 
 public interface ISerialiser
 {

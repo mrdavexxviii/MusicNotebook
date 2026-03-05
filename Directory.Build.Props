@@ -1,0 +1,18 @@
+<Project>
+    <PropertyGroup>
+        <Description>Music Notebook</Description>
+        <TargetFramework>net10.0-windows</TargetFramework>
+        <LangVersion>13</LangVersion>
+        <RootNamespace>MusicNotebook</RootNamespace>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<Version>0.1.0</Version>
+		<Patch>0</Patch>
+		<AssemblyVersion>$(Version)$(Patch)</AssemblyVersion>
+		<FileVersion>$(Version)$(Patch)</FileVersion>
+	</PropertyGroup>
+</Project>

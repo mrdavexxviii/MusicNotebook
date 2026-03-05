@@ -1,22 +1,14 @@
 ﻿using MusicNotebook.NotebookDefinitions;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization.Metadata;
 
-namespace MusicNotebookLibrary.Serialisation;
+namespace MusicNotebook.Serialisation;
 
-public class EncryptedSerialiser : ISerialiser
+public class EncryptedSerialiser(IPasswordService passwordService) : ISerialiser
 {
-    private readonly IPasswordService passwordService;
+    private readonly IPasswordService passwordService = passwordService;
 
-    public EncryptedSerialiser(IPasswordService passwordService)
-    {
-        this.passwordService = passwordService;
-    }
     public bool Save(string filename, Notebook notebook)
     {
         if (!passwordService.ValidPassword)
@@ -25,33 +17,29 @@ public class EncryptedSerialiser : ISerialiser
         }
         try
         {
-            using (FileStream fileStream = new(filename, FileMode.Create))
-            {
-                byte[] plaintextBytes = Encoding.UTF8.GetBytes(JsonHandler.ToJson(notebook));
+            using FileStream fileStream = new(filename, FileMode.Create);
+            byte[] plaintextBytes = Encoding.UTF8.GetBytes(JsonHandler.ToJson(notebook));
 
-                // Generate a random salt (store this with the ciphertext)
-                byte[] salt = new byte[16];
-                RandomNumberGenerator.Fill(salt);
+            // Generate a random salt (store this with the ciphertext)
+            byte[] salt = new byte[16];
+            RandomNumberGenerator.Fill(salt);
 
-                // Derive a key from password+salt
+            // Derive a key from password+salt
 
-                byte[] key = Rfc2898DeriveBytes.Pbkdf2(passwordService.Password, salt, 100_000, HashAlgorithmName.SHA256, 32);
+            byte[] key = Rfc2898DeriveBytes.Pbkdf2(passwordService.Password, salt, 100_000, HashAlgorithmName.SHA256, 32);
 
-                using Aes aes = Aes.Create();
-                aes.Key = key;
-                aes.GenerateIV();
-                byte[] iv = aes.IV;
+            using Aes aes = Aes.Create();
+            aes.Key = key;
+            aes.GenerateIV();
+            byte[] iv = aes.IV;
 
-                // Prepend salt and IV so they are available for decryption
-                fileStream.Write(salt, 0, salt.Length);
-                fileStream.Write(iv, 0, iv.Length);
+            // Prepend salt and IV so they are available for decryption
+            fileStream.Write(salt, 0, salt.Length);
+            fileStream.Write(iv, 0, iv.Length);
 
-                using (var cs = new CryptoStream(fileStream, aes.CreateEncryptor(), CryptoStreamMode.Write))
-                {
-                    cs.Write(plaintextBytes, 0, plaintextBytes.Length);
-                    cs.FlushFinalBlock();
-                }
-            }
+            using var cs = new CryptoStream(fileStream, aes.CreateEncryptor(), CryptoStreamMode.Write);
+            cs.Write(plaintextBytes, 0, plaintextBytes.Length);
+            cs.FlushFinalBlock();
             return true;
         }
         catch (Exception ex)
@@ -104,7 +92,7 @@ public class EncryptedSerialiser : ISerialiser
 
                 return JsonHandler.FromJson(Encoding.UTF8.GetString(ms.ToArray()));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 passwordService.RefreshPassword();
             }

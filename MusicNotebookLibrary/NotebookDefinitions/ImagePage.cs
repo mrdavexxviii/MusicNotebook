@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Windows.Ink;
 
-namespace MusicNotebook.NotebookDefinitions
-{
-    public class ImagePage : INotebookPage
-    {
-        public string Name { get; set; }
-        public string Content { get; set; }
-        public StrokeCollection ImageData { get; set; } = new();
+namespace MusicNotebook.NotebookDefinitions;
 
-      
-    }
+public partial class ImagePage : ObservableObject, INotebookPage
+{
+    [ObservableProperty]
+    string _name = string.Empty;
+    [ObservableProperty]
+    string _content = string.Empty;
+    public StrokeCollection ImageData { get; set; } = [];
+
+  
 }

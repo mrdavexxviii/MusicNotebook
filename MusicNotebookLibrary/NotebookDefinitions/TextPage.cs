@@ -1,15 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace MusicNotebook.NotebookDefinitions
+namespace MusicNotebook.NotebookDefinitions;
+
+public partial class TextPage : ObservableObject, INotebookPage
 {
-    public partial class TextPage : ObservableObject, INotebookPage
-    {
-        [ObservableProperty]
-        private string _name;
-        [ObservableProperty]
-        private string _content;
-    }
+    [ObservableProperty]
+    private string _name = string.Empty;
+    [ObservableProperty]
+    private string _content = string.Empty;
 }

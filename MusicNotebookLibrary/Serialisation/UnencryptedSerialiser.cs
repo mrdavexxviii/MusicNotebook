@@ -1,62 +1,43 @@
 ﻿using MusicNotebook.NotebookDefinitions;
-using MusicNotebook.Serialisation;
-using MusicNotebookLibrary.Serialisation;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Security.Cryptography;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization.Metadata;
 
-namespace MusicNotebook
+namespace MusicNotebook.Serialisation;
+
+public class UnencryptedSerialiser : ISerialiser
 {
-    public class UnencryptedSerialiser : ISerialiser
+    public bool Save(string filename, Notebook notebook)
     {
-        public bool Save(string filename, Notebook notebook)
+        try
         {
-            try
-            {
-                using (FileStream fileStream = new(filename, FileMode.Create))
-                {
+            using FileStream fileStream = new(filename, FileMode.Create);
 
-                    using (StreamWriter encryptWriter = new(fileStream))
-                    {
+            using StreamWriter encryptWriter = new(fileStream);
 
-                        string str = JsonHandler.ToJson(notebook);
-                        encryptWriter.Write(str);
-                    }
-
-                }
-                return true;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
+            string str = JsonHandler.ToJson(notebook);
+            encryptWriter.Write(str);
+            return true;
         }
-        public Notebook Load(string filename)
+        catch (Exception)
         {
-
-            try
-            {
-                using (FileStream fileStream = new(filename, FileMode.Open))
-                {
-
-                    using (StreamReader decryptReader = new(fileStream))
-                    {
-                        string decryptedMessage =  decryptReader.ReadToEnd();
-                        return JsonHandler.FromJson(decryptedMessage);
-
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"The decryption failed. {ex}");
-                return null;
-            }
+            return false;
         }
-
     }
+    public Notebook? Load(string filename)
+    {
+
+        try
+        {
+            using FileStream fileStream = new(filename, FileMode.Open);
+
+            using StreamReader decryptReader = new(fileStream);
+            string decryptedMessage = decryptReader.ReadToEnd();
+            return JsonHandler.FromJson(decryptedMessage);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"The decryption failed. {ex}");
+            return null;
+        }
+    }
+
 }

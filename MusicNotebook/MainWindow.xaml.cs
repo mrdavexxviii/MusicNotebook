@@ -49,11 +49,8 @@ namespace MusicNotebook
 
         private void ActivateEditorForItem(INotebookPage page)
         {
-            // Try to get the TabItem container for this page
-            var tabItem = Tabs.ItemContainerGenerator.ContainerFromItem(page) as TabItem;
-           
             // If TabItem is still null try again later (give layout a chance)
-            if (tabItem == null)
+            if (Tabs.ItemContainerGenerator.ContainerFromItem(page) is not TabItem)
             {
                 Dispatcher.BeginInvoke(() => ActivateEditorForItem(page), DispatcherPriority.Input);
                 return;
@@ -66,7 +63,10 @@ namespace MusicNotebook
 
 
             // Now toggle visibility + focus of the editor inside the header
-            ChangeVisibility(searchRoot, true);
+            if (searchRoot != null)
+            {
+                ChangeVisibility(searchRoot, true);
+            }
         }
 
         // Double-click the TextBlock: hide it, show the TextBox and set focus

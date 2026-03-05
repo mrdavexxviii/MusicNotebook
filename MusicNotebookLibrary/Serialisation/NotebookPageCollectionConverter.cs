@@ -1,10 +1,6 @@
 ﻿using MusicNotebook.NotebookDefinitions;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Xml.Linq;
 
 namespace MusicNotebook.Serialisation;
 
@@ -29,19 +25,28 @@ public class NotebookPageCollectionConverter : JsonConverter<IList<INotebookPage
                 // Use a discriminator property or type name to determine the concrete type
                 if (root.TryGetProperty("type", out var typeProp) && typeProp.GetString() == nameof(TextPage))
                 {
-                    TextPage elementA = JsonSerializer.Deserialize<TextPage>(jsonDocument, options);
-                    list.Add(elementA);
+                    TextPage? elementA = JsonSerializer.Deserialize<TextPage>(jsonDocument, options);
+                    if (elementA != null)
+                    {
+                        list.Add(elementA);
+                    }
                 }
                 else if (root.TryGetProperty("type", out typeProp) && typeProp.GetString() == nameof(ImagePage))
                 {
                     var elementB = JsonSerializer.Deserialize<ImagePage>(jsonDocument, options);
-                    list.Add(elementB);
+                    if (elementB != null)
+                    {
+                        list.Add(elementB);
+                    }
                 }
                 else
                 {
                     // Fallback: try to deserialize as IElement (if no discriminator)
                     var element = JsonSerializer.Deserialize<INotebookPage>(jsonDocument, options);
-                    list.Add(element);
+                    if (element != null)
+                    {
+                        list.Add(element);
+                    }
                 }
             }
         }

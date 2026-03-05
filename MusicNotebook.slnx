@@ -1,5 +1,7 @@
 <Solution>
-  <Folder Name="/Solution Items/" />
+  <Folder Name="/Solution Items/">
+    <File Path="Directory.Build.Props" />
+  </Folder>
   <Project Path="MusicNotebook/MusicNotebook.csproj" />
   <Project Path="MusicNotebookLibrary.Test/MusicNotebookLibrary.Test.csproj" Id="ac79fe86-9edb-456f-8085-c7f61d2f4754" />
   <Project Path="MusicNotebookLibrary/MusicNotebookLibrary.csproj" Id="7e9325ca-6194-4a97-8bc2-c159cfb192d8" />
