@@ -15,20 +15,44 @@ namespace MusicNotebook
         const string unprotectedExtension = ".umnb";
         const string protectedExtension = ".mnb";
         readonly string filterString = $"Music Notebook files (*{protectedExtension})|*{protectedExtension}|Unprotected Music Notebook files (*{unprotectedExtension})|*{unprotectedExtension}|All files (*.*)|*.*";
-
+        
         [ObservableProperty]
         private string _currentFilename = string.Empty;
+        private string currentFileChecksum = string.Empty;
 
         [ObservableProperty]
-        private Notebook _noteBook= new Notebook();
+        private Notebook _noteBook;
      
         private PasswordService _passwordService = new PasswordService();
+
+        public ViewModel()
+        {
+            NoteBook = new Notebook();
+            CurrentFilename = string.Empty;
+            currentFileChecksum = ModelChecksum.Checksum(NoteBook);
+        }
+
+        private bool CanOverwrite()
+        {
+            if (currentFileChecksum == ModelChecksum.Checksum(NoteBook))
+            {
+                return true;
+            }
+            else
+            {
+                return MessageBox.Show("Current notebook has unsaved changes. Do you want to discard them?", "Unsaved Changes", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes;
+            }
+        }
 
         [RelayCommand]
         private void New()
         {
-            NoteBook = new Notebook();  
-            CurrentFilename = string.Empty;
+            if (CanOverwrite())
+            {
+                NoteBook = new Notebook();
+                CurrentFilename = string.Empty;
+                currentFileChecksum = ModelChecksum.Checksum(NoteBook);
+            }
         }
 
         private ISerialiser? InitialiseEncryptedSerialiser()
@@ -60,7 +84,10 @@ namespace MusicNotebook
         [RelayCommand]
         private void Open()
         {
-            
+            if (!CanOverwrite())
+            {
+                return;
+            }
             FileDialog dialog = new OpenFileDialog();
             dialog.Filter = filterString;
    
@@ -104,6 +131,7 @@ namespace MusicNotebook
             if (serialiser != null)
             {
                 serialiser.Save(CurrentFilename, NoteBook);
+                currentFileChecksum = ModelChecksum.Checksum(NoteBook);
             }
             else
             {
