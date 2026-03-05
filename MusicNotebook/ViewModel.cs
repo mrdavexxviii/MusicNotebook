@@ -57,14 +57,14 @@ namespace MusicNotebook
 
         private ISerialiser? InitialiseEncryptedSerialiser()
         {
-            if (!_passwordService.ValidPassword)
-            {
-                if (!_passwordService.RefreshPassword())
-                {
-                    return null;
-                }
-            }
-            return new EncryptedSerialiser(_passwordService.Password);
+            //if (!_passwordService.ValidPassword)
+            //{
+            //    if (!_passwordService.RefreshPassword())
+            //    {
+            //        return null;
+            //    }
+            //}
+            return new EncryptedSerialiser(_passwordService);
             
         }
 
@@ -96,8 +96,14 @@ namespace MusicNotebook
                 ISerialiser? serialiser = GetSerialiserForFile(dialog.FileName);
                 if (serialiser != null)
                 {
-                    NoteBook = serialiser.Load(dialog.FileName);
-                    this.CurrentFilename = dialog.FileName;
+                    var notebook = serialiser.Load(dialog.FileName);
+                    if (notebook != null)
+                    {
+                        NoteBook = notebook;
+                        this.CurrentFilename = dialog.FileName;
+                        this.currentFileChecksum = ModelChecksum.Checksum(NoteBook);
+                        notebook.SelectedPage = notebook.Pages.Count > 0 ? notebook.Pages[0] : null;
+                    }
                 } else
                 {
                     MessageBox.Show("Unable to open file.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -130,8 +136,13 @@ namespace MusicNotebook
             ISerialiser? serialiser = GetSerialiserForFile(CurrentFilename);
             if (serialiser != null)
             {
-                serialiser.Save(CurrentFilename, NoteBook);
-                currentFileChecksum = ModelChecksum.Checksum(NoteBook);
+                if (serialiser.Save(CurrentFilename, NoteBook))
+                {
+                    currentFileChecksum = ModelChecksum.Checksum(NoteBook);
+                } else
+                {
+                    CurrentFilename = string.Empty;
+                }
             }
             else
             {

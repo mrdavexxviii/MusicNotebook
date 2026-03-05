@@ -11,5 +11,8 @@ namespace MusicNotebook
         public bool DialogResult { get; private set; }
         [ObservableProperty]
         private string _password = string.Empty;
+
+        [ObservableProperty]
+        private bool _rememberPassword = false;
     }
 }

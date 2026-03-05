@@ -13,7 +13,7 @@ namespace MusicNotebook
 {
     public class UnencryptedSerialiser : ISerialiser
     {
-        public void Save(string filename, Notebook notebook)
+        public bool Save(string filename, Notebook notebook)
         {
             try
             {
@@ -28,12 +28,11 @@ namespace MusicNotebook
                     }
 
                 }
-
-                Console.WriteLine("The file was encrypted.");
+                return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"The encryption failed. {ex}");
+                return false;
             }
         }
         public Notebook Load(string filename)
