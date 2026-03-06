@@ -31,7 +31,7 @@ public partial class ViewModel : ObservableObject
         currentFileChecksum = ModelChecksum.Checksum(NoteBook);
     }
 
-    private bool CanOverwrite()
+    public bool CanOverwrite()
     {
         if (currentFileChecksum == ModelChecksum.Checksum(NoteBook))
         {
@@ -189,5 +189,24 @@ public partial class ViewModel : ObservableObject
         RequestEditPageName?.Invoke(page);
     }
 
+    [RelayCommand]
+     void Properties()
+    {
+        if (NoteBook.SelectedPage != null)
+        {
+            if (NoteBook.SelectedPage is TextPage textPage)
+            {
+                //var vm = new TextPagePropertiesViewModel(textPage);
+                //var view = new TextPagePropertiesView { DataContext = vm };
+                //view.ShowDialog();
+            }
+             else if (NoteBook.SelectedPage is ImagePage imagePage)
+            {
+                var vm = new ImagePagePropertiesViewModel(imagePage);
+                var view = new ImagePagePropertiesView { DataContext = vm };
+                view.ShowDialog();
+            }
+        }
+    }
 
 }

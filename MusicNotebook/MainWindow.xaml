@@ -11,6 +11,8 @@
         Left="{Binding HorizontalMargin, Source={StaticResource ssp}}"
         Top="{Binding VerticalMargin, Source={StaticResource ssp}}">
     <Window.Resources>
+        <local:ResourceImageConverter x:Key="ResourceImageConverter" />
+        <local:ImageSourceSizeConverter x:Key="ImageSizeConverter" />
         <DataTemplate x:Key="TextPageTemplate">
             <Grid>
                 <TextBox Text="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" x:Name="TextPageContent" FontFamily="Consolas" />
@@ -18,8 +20,26 @@
         </DataTemplate>
         <DataTemplate x:Key="ImagePageTemplate">
             <Grid>
+                
+
                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                    <InkCanvas x:Name="Canvas" Background="White" Strokes="{Binding ImageData}" />
+                    <Grid>
+                        <Grid.Background>
+                            <ImageBrush
+                                ImageSource="{Binding Background, Converter={StaticResource ResourceImageConverter}}"
+                                TileMode="Tile"
+                                Viewport="{Binding BackgroundPitch, Converter={StaticResource ImageSizeConverter}}"
+                                ViewportUnits="Absolute"
+                                Stretch="None"
+                                AlignmentY="Bottom"
+                                Opacity="0.3" />
+                        </Grid.Background>
+
+                        <!--
+                                Viewport="0,0,1920,400"-->
+                        <!--Viewport="{Binding BackgroundPitch, Converter={StaticResource ImageSizeConverter}}" -->
+                        <InkCanvas x:Name="Canvas" Background="Transparent" Strokes="{Binding ImageData}" PreviewStylusDown="Canvas_PreviewStylusDown" PreviewStylusButtonDown="Canvas_PreviewStylusButtonDown" PreviewStylusButtonUp="Canvas_PreviewStylusButtonUp" PreviewMouseLeftButtonDown="Canvas_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="Canvas_PreviewMouseLeftButtonUp" />
+                    </Grid>
                 </ScrollViewer>
             </Grid>
         </DataTemplate>
@@ -41,6 +61,7 @@
             <Rectangle Width="20" Fill="Transparent" />
             <Button Content="Delete" Command="{Binding DeleteCurrentPageCommand}" Width="80" />
         </StackPanel>
+        <Button HorizontalAlignment="Right" Content="Properties" Command="{Binding PropertiesCommand}" Width="80" />
 
         <Grid x:Name="ContentGrid" DataContext="{Binding NoteBook}" Grid.Row="1">
             <Grid.RowDefinitions>
