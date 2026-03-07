@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 using MusicNotebook.NotebookDefinitions;
 using MusicNotebook.Serialisation;
+using System.IO;
 using System.Windows;
 
 namespace MusicNotebook;
@@ -26,9 +27,7 @@ public partial class ViewModel : ObservableObject
 
     public ViewModel()
     {
-        NoteBook = new Notebook();
-        CurrentFilename = string.Empty;
-        currentFileChecksum = ModelChecksum.Checksum(NoteBook);
+        NoteBook = NewNotebook();
     }
 
     public bool CanOverwrite()
@@ -48,21 +47,22 @@ public partial class ViewModel : ObservableObject
     {
         if (CanOverwrite())
         {
-            NoteBook = new Notebook();
-            CurrentFilename = string.Empty;
-            currentFileChecksum = ModelChecksum.Checksum(NoteBook);
+            NoteBook = NewNotebook();
         }
+    }
+
+    private Notebook NewNotebook()
+    {
+        var nb = new Notebook();
+        CurrentFilename = string.Empty;
+        currentFileChecksum = ModelChecksum.Checksum(nb);
+        nb.SelectedPage = nb.Pages.First();
+        return nb;
     }
 
     private EncryptedSerialiser? InitialiseEncryptedSerialiser()
     {
-        //if (!_passwordService.ValidPassword)
-        //{
-        //    if (!_passwordService.RefreshPassword())
-        //    {
-        //        return null;
-        //    }
-        //}
+  
         return new EncryptedSerialiser(_passwordService);
         
     }
@@ -103,6 +103,10 @@ public partial class ViewModel : ObservableObject
                     NoteBook = notebook;
                     this.CurrentFilename = dialog.FileName;
                     this.currentFileChecksum = ModelChecksum.Checksum(NoteBook);
+                    if (!notebook.Pages.Any(x => x is TitlePage))
+                    {
+                        notebook.Pages.Insert(0, new TitlePage { Name = Path.GetFileNameWithoutExtension( dialog.FileName) });
+                    }
                     notebook.SelectedPage = notebook.Pages.Count > 0 ? notebook.Pages[0] : null;
                 }
             } else
@@ -172,7 +176,7 @@ public partial class ViewModel : ObservableObject
     [RelayCommand]
     void DeleteCurrentPage()
     {
-        if (NoteBook.SelectedPage != null)
+        if (NoteBook.SelectedPage != null && NoteBook.SelectedPage.CanDelete)
         {
             if (MessageBox.Show("Delete current page", "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
@@ -194,13 +198,7 @@ public partial class ViewModel : ObservableObject
     {
         if (NoteBook.SelectedPage != null)
         {
-            if (NoteBook.SelectedPage is TextPage textPage)
-            {
-                //var vm = new TextPagePropertiesViewModel(textPage);
-                //var view = new TextPagePropertiesView { DataContext = vm };
-                //view.ShowDialog();
-            }
-             else if (NoteBook.SelectedPage is ImagePage imagePage)
+            if (NoteBook.SelectedPage is ImagePage imagePage)
             {
                 var vm = new ImagePagePropertiesViewModel(imagePage);
                 var view = new ImagePagePropertiesView { DataContext = vm };

@@ -15,6 +15,10 @@ public partial class ImagePage : ObservableObject, INotebookPage
     [ObservableProperty]
     string _background = string.Empty;
     public StrokeCollection ImageData { get; set; } = [];
+
+    [JsonIgnore]
+    public bool CanDelete => true;
+
     [ObservableProperty]
     double _backgroundPitch = 1;
 

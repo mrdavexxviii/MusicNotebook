@@ -17,11 +17,7 @@ public class SaveLoadTests
         string file = Path.GetTempFileName();
         try
         {
-            Notebook original = new()
-            {
-                Name = "MyTestNotebook",
-                Pages = []
-            };
+            Notebook original = new();
             original.Pages.Add(new TextPage { Name = "Page1", Content = "This is the content of page 1." });
             var s = new EncryptedSerialiser(mockPasswordService);
             s.Save(file, original);

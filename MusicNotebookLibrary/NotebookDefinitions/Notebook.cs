@@ -5,12 +5,15 @@ using System.Text.Json.Serialization;
 namespace MusicNotebook.NotebookDefinitions;
 
 
-public partial class Notebook : ObservableObject
+public class Notebook : ObservableObject
 {
-    [ObservableProperty]
-    private string _name = "New Notebook";
-    [ObservableProperty]
-    [JsonIgnore]
     private INotebookPage? _selectedPage;
-    public ObservableCollection<INotebookPage> Pages { get; set; } = [];
+    [JsonIgnore]
+    public INotebookPage? SelectedPage
+    {
+        get => _selectedPage;
+        set => SetProperty(ref _selectedPage, value);
+    }
+
+    public ObservableCollection<INotebookPage> Pages { get; set; } = [new TitlePage { Name= "New Notebook"}];
 }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MusicNotebook"
         mc:Ignorable="d"
-        Title="Music Notebook"   
+        Title="{Binding WindowTitle}"   
         Height="{Binding AppStartHeight, Source={StaticResource ssp}}"
         Width="{Binding AppStartWidth, Source={StaticResource ssp}}"
         Left="{Binding HorizontalMargin, Source={StaticResource ssp}}"
@@ -20,8 +20,6 @@
         </DataTemplate>
         <DataTemplate x:Key="ImagePageTemplate">
             <Grid>
-                
-
                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                     <Grid>
                         <Grid.Background>
@@ -34,13 +32,23 @@
                                 AlignmentY="Bottom"
                                 Opacity="0.3" />
                         </Grid.Background>
-
-                        <!--
-                                Viewport="0,0,1920,400"-->
-                        <!--Viewport="{Binding BackgroundPitch, Converter={StaticResource ImageSizeConverter}}" -->
                         <InkCanvas x:Name="Canvas" Background="Transparent" Strokes="{Binding ImageData}" PreviewStylusDown="Canvas_PreviewStylusDown" PreviewStylusButtonDown="Canvas_PreviewStylusButtonDown" PreviewStylusButtonUp="Canvas_PreviewStylusButtonUp" PreviewMouseLeftButtonDown="Canvas_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="Canvas_PreviewMouseLeftButtonUp" />
                     </Grid>
                 </ScrollViewer>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="TitlePageTemplate">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBox BorderBrush="Transparent" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="5" Grid.Row="0" />
+                <TextBox Text="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" Margin="5" Grid.Row="1" /> 
+                <Label Content="Production Notes" HorizontalAlignment="Center" Margin="5" Grid.Row="2" />
+                <TextBox Text="{Binding ProductionNotes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" Grid.Row="3" Margin="5" />
             </Grid>
         </DataTemplate>
         <local:TabContentSelector x:Key="TabContentSelector" />
@@ -64,14 +72,8 @@
         <Button HorizontalAlignment="Right" Content="Properties" Command="{Binding PropertiesCommand}" Width="80" />
 
         <Grid x:Name="ContentGrid" DataContext="{Binding NoteBook}" Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <TextBox Text="{Binding Name}" />
-            <TabControl Grid.Row="1" ItemsSource="{Binding Pages}" SelectedItem="{Binding SelectedPage, Mode=TwoWay}"
+            <TabControl ItemsSource="{Binding Pages}" SelectedItem="{Binding SelectedPage, Mode=TwoWay}"
                         ContentTemplateSelector="{StaticResource TabContentSelector}" x:Name="Tabs" TabStripPlacement="Left">
-                <!-- Move header DataTemplate into the TabItem container so ancestor lookups on TabItem can find the TabControl -->
                 <TabControl.ItemContainerStyle>
                     <Style TargetType="TabItem">
                         <Setter Property="HeaderTemplate">

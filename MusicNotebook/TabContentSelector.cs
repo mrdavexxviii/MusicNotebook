@@ -18,6 +18,10 @@ class TabContentSelector : DataTemplateSelector
             {
                 return (DataTemplate)fe.FindResource("TextPageTemplate");
             }
+            if (item is TitlePage)
+            {                
+                return (DataTemplate)fe.FindResource("TitlePageTemplate");
+            }
         }
         return base.SelectTemplate(item, container);
     }

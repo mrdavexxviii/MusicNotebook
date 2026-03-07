@@ -3,13 +3,15 @@ using System.Text.Json.Serialization;
 
 namespace MusicNotebook.NotebookDefinitions;
 
-public partial class TextPage : ObservableObject, INotebookPage
+public partial class TitlePage : ObservableObject, INotebookPage
 {
     [ObservableProperty]
     private string _name = string.Empty;
     [ObservableProperty]
     private string _content = string.Empty;
+    [ObservableProperty]
+    private string _productionNotes = string.Empty;
 
     [JsonIgnore]
-    public bool CanDelete => true;
+    public bool CanDelete => false;
 }
