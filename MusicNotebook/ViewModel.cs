@@ -21,6 +21,9 @@ public partial class ViewModel : ObservableObject
     private string currentFileChecksum = string.Empty;
 
     [ObservableProperty]
+    private bool _displayProperties = false;
+
+    [ObservableProperty]
     private Notebook _noteBook;
  
     readonly private PasswordService _passwordService = new();
@@ -196,15 +199,7 @@ public partial class ViewModel : ObservableObject
     [RelayCommand]
      void Properties()
     {
-        if (NoteBook.SelectedPage != null)
-        {
-            if (NoteBook.SelectedPage is ImagePage imagePage)
-            {
-                var vm = new ImagePagePropertiesViewModel(imagePage);
-                var view = new ImagePagePropertiesView { DataContext = vm };
-                view.ShowDialog();
-            }
-        }
+        this.DisplayProperties = !this.DisplayProperties;
     }
 
 }

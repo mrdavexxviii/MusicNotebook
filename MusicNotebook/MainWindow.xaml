@@ -11,8 +11,10 @@
         Left="{Binding HorizontalMargin, Source={StaticResource ssp}}"
         Top="{Binding VerticalMargin, Source={StaticResource ssp}}">
     <Window.Resources>
+        <local:BackgroundPicker x:Key="BackgroundPicker" />
         <local:ResourceImageConverter x:Key="ResourceImageConverter" />
         <local:ImageSourceSizeConverter x:Key="ImageSizeConverter" />
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
         <DataTemplate x:Key="TextPageTemplate">
             <Grid>
                 <TextBox Text="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" x:Name="TextPageContent" FontFamily="Consolas" />
@@ -35,6 +37,17 @@
                         <InkCanvas x:Name="Canvas" Background="Transparent" Strokes="{Binding ImageData}" PreviewStylusDown="Canvas_PreviewStylusDown" PreviewStylusButtonDown="Canvas_PreviewStylusButtonDown" PreviewStylusButtonUp="Canvas_PreviewStylusButtonUp" PreviewMouseLeftButtonDown="Canvas_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="Canvas_PreviewMouseLeftButtonUp" />
                     </Grid>
                 </ScrollViewer>
+                <Grid HorizontalAlignment="Right" VerticalAlignment="Top"
+                    Margin="5" Height="25" Width="100" x:Name="ImagePanelProperties"
+                      Visibility="{Binding DataContext.DisplayProperties, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource BoolToVisibility}}">
+
+                    <ComboBox x:Name="BackgroundSelector"
+                          ItemsSource="{Binding Source={StaticResource BackgroundPicker}, Path=AvailableBackgrounds}"
+                          DisplayMemberPath="Name"
+                          SelectedValuePath="Resource"
+                          SelectedValue="{Binding Background, Mode=TwoWay}"
+                          SelectedItem="{Binding SelectedBackground, Mode=TwoWay}" />
+                </Grid>
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="TitlePageTemplate">
