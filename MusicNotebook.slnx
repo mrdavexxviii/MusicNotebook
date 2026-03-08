@@ -1,8 +1,20 @@
 <Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="ARM" />
+    <Platform Name="ARM64" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
   <Folder Name="/Solution Items/">
     <File Path="Directory.Build.Props" />
   </Folder>
-  <Project Path="MusicNotebook/MusicNotebook.csproj" />
+  <Project Path="MusicHandbook.Installer/MusicHandbook.Installer.wapproj" Type="c7167f0d-bc9f-4e6e-afe1-012c56b48db5" Id="79661f2f-d770-4dea-8877-408c4aa1e5c8">
+    <Deploy />
+  </Project>
+  <Project Path="MusicNotebook/MusicNotebook.csproj">
+    <Platform Solution="*|x64" Project="x64" />
+  </Project>
   <Project Path="MusicNotebookLibrary.Test/MusicNotebookLibrary.Test.csproj" Id="ac79fe86-9edb-456f-8085-c7f61d2f4754" />
   <Project Path="MusicNotebookLibrary/MusicNotebookLibrary.csproj" Id="7e9325ca-6194-4a97-8bc2-c159cfb192d8" />
 </Solution>

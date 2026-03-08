@@ -4,6 +4,8 @@
     <OutputType>WinExe</OutputType>
     <UseWPF>true</UseWPF>
 	<ApplicationIcon>AppIcon.ico</ApplicationIcon>
+	  <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+	  <Platforms>x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
