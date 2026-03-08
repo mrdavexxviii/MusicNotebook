@@ -196,10 +196,4 @@ public partial class ViewModel : ObservableObject
         RequestEditPageName?.Invoke(page);
     }
 
-    [RelayCommand]
-     void Properties()
-    {
-        this.DisplayProperties = !this.DisplayProperties;
-    }
-
 }

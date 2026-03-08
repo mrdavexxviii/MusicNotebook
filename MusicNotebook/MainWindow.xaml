@@ -82,7 +82,7 @@
             <Rectangle Width="20" Fill="Transparent" />
             <Button Content="Delete" Command="{Binding DeleteCurrentPageCommand}" Width="80" />
         </StackPanel>
-        <Button HorizontalAlignment="Right" Content="Properties" Command="{Binding PropertiesCommand}" Width="80" />
+        <ToggleButton HorizontalAlignment="Right" Content="Properties" Width="80" IsChecked="{Binding DisplayProperties}" />
 
         <Grid x:Name="ContentGrid" DataContext="{Binding NoteBook}" Grid.Row="1">
             <TabControl ItemsSource="{Binding Pages}" SelectedItem="{Binding SelectedPage, Mode=TwoWay}"
