@@ -127,4 +127,22 @@
   <data name="Guitar_Tab" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\Guitar_Tab.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="PageButton_AddImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\PageButton_AddImage.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PageButton_AddImage_Tooltip" xml:space="preserve">
+    <value>Add Drawing Page</value>
+  </data>
+  <data name="PageButton_AddText" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\PageButton_AddText.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PageButton_AddText_Tooltip" xml:space="preserve">
+    <value>Add Text Page</value>
+  </data>
+  <data name="PageButton_Delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\PageButton_Delete.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PageButton_Delete_Tooltip" xml:space="preserve">
+    <value>Delete Current Page</value>
+  </data>
 </root>

@@ -89,5 +89,62 @@ namespace MusicNotebook {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap PageButton_AddImage {
+            get {
+                object obj = ResourceManager.GetObject("PageButton_AddImage", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Drawing Page.
+        /// </summary>
+        public static string PageButton_AddImage_Tooltip {
+            get {
+                return ResourceManager.GetString("PageButton_AddImage_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap PageButton_AddText {
+            get {
+                object obj = ResourceManager.GetObject("PageButton_AddText", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Text Page.
+        /// </summary>
+        public static string PageButton_AddText_Tooltip {
+            get {
+                return ResourceManager.GetString("PageButton_AddText_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap PageButton_Delete {
+            get {
+                object obj = ResourceManager.GetObject("PageButton_Delete", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete Current Page.
+        /// </summary>
+        public static string PageButton_Delete_Tooltip {
+            get {
+                return ResourceManager.GetString("PageButton_Delete_Tooltip", resourceCulture);
+            }
+        }
     }
 }
