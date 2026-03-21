@@ -25,6 +25,9 @@ public partial class ViewModel : ObservableObject
 
     [ObservableProperty]
     private Notebook _noteBook;
+
+    [ObservableProperty]
+    private string? _windowTitle = "Music Notebook";
  
     readonly private PasswordService _passwordService = new();
 
